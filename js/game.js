@@ -91,7 +91,7 @@ function resetScore() {
 function chooseRandomLocation()
 {
 	//number between 1 - 7
-	var rand = Math.floor(((Math.random()*7)));
+	var rand = Math.floor(((Math.random()*location_dictionary.length)));
   winPos = rand;
 	var loc = { country: location_dictionary[rand][1], city: location_dictionary[rand][0], lat: location_dictionary[rand][2], lng: location_dictionary[rand][3]};
 
