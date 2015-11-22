@@ -22,7 +22,8 @@ var pano;
 var panoCurrent;
 var renderer;
 var scene;
-api_key = "AIzaSyB5TgWQrj9l0WE-ms-jUcNeBCq06ycUNJU";
+var api_key = "AIzaSyB5TgWQrj9l0WE-ms-jUcNeBCq06ycUNJU";
+var prefix = "https://maps.googleapis.com/maps/api/streetview?";
 
 
 function bend( group, amount, multiMaterialObject ) {
@@ -82,9 +83,14 @@ function loadPano() {
 			.to({opacity: 0}, 300)
 			.onComplete(function () {
 				// load in new panorama texture.
+				randLocation = "Paris";
 				// pano.material.map = THREE.ImageUtils.loadTexture(imgPano, THREE.UVMapping, fadeIn);
 				THREE.ImageUtils.crossOrigin = '';
-				url = "https://maps.googleapis.com/maps/api/streetview?size=6400x6400&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key="+api_key;
+				url = prefix;
+				url +="size=10000x5000&location="+randLocation;
+				url += "&fov=120";
+				url +="&heading=360&pitch=0&key=";
+				url += api_key;
 				pano.material.map = THREE.ImageUtils.loadTexture(url, THREE.UVMapping, fadeIn);
 			})
 			.start();
