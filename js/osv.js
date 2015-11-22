@@ -7,7 +7,8 @@
 // Parameters
 // ----------------------------------------------
 var QUALITY = 3;
-var DEFAULT_LOCATION = { lat:44.301945982379095,  lng:9.211585521697998 };
+//var DEFAULT_LOCATION = { lat:44.301945982379095,  lng:9.211585521697998 };
+var DEFAULT_LOCATION = { lat:48.865023,  lng:2.328205 };
 var USE_TRACKER = false;
 var GAMEPAD_SPEED = 0.04;
 var DEADZONE = 0.2;
@@ -464,7 +465,8 @@ function getParams() {
 
 function NextLocation()
 {
-    var loc= { lat: 42.345573, lng: -71.098326 };
+    var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
+    alert(loc);
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     // ADD YOUR CODE HERE:
     
@@ -504,7 +506,9 @@ $(document).ready(function() {
   $("#ui-main").css("opacity", "0");
 
   // Load default location
-  panoLoader.load( new google.maps.LatLng( DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng ) );
+
+  //panoLoader.load( new google.maps.LatLng( DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng ) );
+  NextLocation();
 
   checkWebVR();
 
