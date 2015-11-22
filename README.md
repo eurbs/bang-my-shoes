@@ -1,34 +1,19 @@
-OculusStreetView
-================
+## !MyShoes
 
-Google Street View viewer for the Oculus Rift
+[Click to view](http://eurbs.github.io/bang-my-shoes/)
 
-Demo
--------------
-http://oculusstreetview.eu.pn/index.html
+**Note**: Double click to enter VR mode
 
-Usage
--------------
-- Use the mini-map to select the location.
-- Double press the spacebar to toggle mini-map and settings
+## Installation
 
-Navigation
--------------
-- **Keyboard**: Arrows keys to look around and double-press ctrl to enter a new location
-- **Mouse**: Click and drag to look around and left double-click to enter a new location
-- **Gamepad**: (Chrome only) Button 0 to enter a new location
+### Myo
 
-URL Parameters
--------------
-index.html accepts the following parameters
+1. Download, install, and run [Myo Connect](https://www.myo.com/start/)
 
-- *lat*, *lng* : latitude and longitude (e.g lat=-23.442896&lng=151.906584)
-- *q* : image quality (1: worst, 4:best)
-- *s* : show mini-map and settings (true or false)
+### More Installation Coming soon!!!
 
-Example:  
-http://oculusstreetview.eu.pn/index.html?lat=-23.442896&lng=151.906584&q=4&s=false
 
-Licence
--------------
-MIT Licence
+## Credit
+
+- [Mosvr Panorama Viewer Project](https://github.com/MozVR/panorama-viewer)
+- [myo.js](https://github.com/thalmiclabs/myo.js)

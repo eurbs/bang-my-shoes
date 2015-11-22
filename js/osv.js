@@ -125,9 +125,15 @@ function initControls() {
         }
         lastCtrlKeyTime = ctrlKeyTime;
         break;
+      case 39: //both left and right arrow keys manually advance scene
       case 37:
         NextLocation();
         break;
+      case 83: //S toggles sound
+        killSound();
+        break;
+      case 82: //r resets score
+        stopScore();
       case 18: // Alt
         USE_DEPTH = !USE_DEPTH;
         $('#depth').prop('checked', USE_DEPTH);
@@ -202,10 +208,30 @@ function initGui()
 
 }
 
+var overlay;
+
 function initPano() {
   panoLoader = new GSVPANO.PanoLoader();
   panoDepthLoader = new GSVPANO.PanoDepthLoader();
   panoLoader.setZoom(QUALITY);
+
+  //attempt to do overlay text here
+  //scene = new THREE.Scene();
+  overlay = new THREE.Object3D();
+  var mesh = new THREE.Mesh(
+    new THREE.PlaneGeometry( 63, 30, 20, 20 ),
+    new THREE.MeshBasicMaterial({
+      transparent: true,
+      alphaTest: 0.5,
+      side: THREE.FrontSide,
+      map: THREE.ImageUtils.loadTexture('images/louvre-overlay.png')
+  }));
+  overlay.add( mesh );
+  overlay.position.set( 0, -3, -5 );
+  overlay.scale.set( 0.1, 0.1, 0.1 );
+  //bend(overlay, 100);
+  mesh.renderDepth = 1;
+  scene.add( overlay );
 
   panoLoader.onProgress = function( progress ) {
     if (progress > 0) {
@@ -465,9 +491,15 @@ function getParams() {
 
 function NextLocation()
 {
+    try{
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
-    // ADD YOUR CODE HERE:
+    }
+    catch(error)
+    {
+      panoLoader.load( new google.maps.LatLng( DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng ) );
+    }
+    stopScore();
     
 }
 
