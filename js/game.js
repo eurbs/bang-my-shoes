@@ -14,6 +14,10 @@ var scoreTimer = setInterval(scoreClock, 1000);
 
 function scoreClock() {
     score -= 5;
+    var disp = document.getElementById("clock");
+    if(disp) {
+    	disp.innerHTML = score;
+    }
 }
 
 function stopScore() {
