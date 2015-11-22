@@ -799,8 +799,10 @@ Myo.on('wave_out', function () {
 
 // move to next location
 Myo.on('fingers_spread', function () {
+  spreadCount = 1;
   if (fistCount == 2) { 
-    fistCount = 0
+    fistCount = 0;
+    spreadCount = 0;
     NextLocation();
   } else if (spreadCount == 1 && fistCount == 0) {
     EndGame();
