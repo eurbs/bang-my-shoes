@@ -732,9 +732,17 @@ function UpdateClockTo(text)
     scene.add(clockMesh);
 }
 
+function EndGame ()
+{
+  // stop the clock
+  // add the cat
+  AddTextMesh("End Game. Look Up.");
+}
+
 /* ----------- MYO GESTURES ----------- */
 
 var fistCount = 0;
+var spreadCount = 0;
 var curChoice = 1;
 var choices;
 
@@ -785,6 +793,8 @@ Myo.on('fingers_spread', function () {
   if (fistCount == 2) { 
     fistCount = 0
     NextLocation();
+  } else if (spreadCount == 1 && fistCount == 0) {
+    EndGame();
   }
 });
 
