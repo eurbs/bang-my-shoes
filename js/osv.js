@@ -744,7 +744,6 @@ function UpdateClockTo(text)
 function EndGame ()
 {
   DelayScore();
-  // add the cat
   AddTextMesh("End Game. Look Up.");
 }
 
