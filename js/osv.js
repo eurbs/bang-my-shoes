@@ -152,7 +152,7 @@ function initWebGL() {
   progBar.translateZ(0.2);
   progBarContainer.add(progBar);
 
-  AddTextMesh("Welcome");
+  //AddTextMesh("Welcome");
 
   // Create render
   try {
@@ -551,7 +551,7 @@ function FirstLocation()
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     //alert(loc.city)
-    loadOverlay(loc.city);
+    AddTextMesh(loc.city + ", " + loc.country);
     }
     catch(error)
     {
@@ -570,7 +570,7 @@ function NextLocation()
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     //alert(loc.city)
-    loadOverlay(loc.city);
+    AddTextMesh(loc.city + ", " + loc.country);
     }
     catch(error)
     {
@@ -656,7 +656,7 @@ function AddTextMesh(title)
 
     textMesh.position.set( 0, 0, -5 );
     textMesh.scale.set( 0.1, 0.1, 0.1 );
-    bend(textMesh, 100);
+    bend(textMesh, 300);
 
     // var pLocal = new THREE.Vector3( 0, 0, -1 );
     // var pWorld = pLocal.applyMatrix4( camera.matrixWorld );
