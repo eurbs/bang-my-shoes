@@ -152,6 +152,8 @@ function initWebGL() {
   progBar.translateZ(0.2);
   progBarContainer.add(progBar);
 
+  AddTextMesh("Welcome");
+
   // Create render
   try {
     renderer = new THREE.WebGLRenderer();
@@ -543,6 +545,24 @@ function getParams() {
   return params;
 }
 
+function FirstLocation()
+{
+    try{
+    var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
+    panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
+    //alert(loc.city)
+    loadOverlay(loc.city);
+    }
+    catch(error)
+    {
+      panoLoader.load( new google.maps.LatLng( DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng ) );
+    }
+
+
+    stopScore();
+    
+}
+
 function NextLocation()
 {
     try{RemoveTextMesh();}catch(e){}
@@ -602,29 +622,28 @@ function RemoveText(type)
 
 function AddTextMesh(title)
 { 
-    /*
     // add 3D text
-    var materialFront = new THREE.MeshBasicMaterial( { color: 0x000000 } );
-    var materialSide = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+    var materialFront = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+    var materialSide = new THREE.MeshBasicMaterial( { color: 0x333333 } );
     var materialArray = [ materialFront, materialSide ];
 
-    var chromeTexture = THREE.ImageUtils.loadTexture( 'Chrome.png' );
-    chromeTexture.wrapS = chromeTexture.wrapT = THREE.RepeatWrapping;
-    chromeTexture.repeat.set( 0.5, 0.5 );
-    var chromeMaterial = new THREE.MeshBasicMaterial( { map: chromeTexture } );
+    // var chromeTexture = THREE.ImageUtils.loadTexture( 'Chrome.png' );
+    // chromeTexture.wrapS = chromeTexture.wrapT = THREE.RepeatWrapping;
+    // chromeTexture.repeat.set( 0.5, 0.5 );
+    // var chromeMaterial = new THREE.MeshBasicMaterial( { map: chromeTexture } );
     
-    var lavaTexture = THREE.ImageUtils.loadTexture( 'lava.jpg' );
-    lavaTexture.wrapS = lavaTexture.wrapT = THREE.RepeatWrapping;
-    lavaTexture.repeat.set( 0.05, 0.05 );
-    var lavaMaterial = new THREE.MeshBasicMaterial( { map: lavaTexture } );
+    // var lavaTexture = THREE.ImageUtils.loadTexture( 'lava.jpg' );
+    // lavaTexture.wrapS = lavaTexture.wrapT = THREE.RepeatWrapping;
+    // lavaTexture.repeat.set( 0.05, 0.05 );
+    // var lavaMaterial = new THREE.MeshBasicMaterial( { map: lavaTexture } );
     
-    var materialArray = [ lavaMaterial, chromeMaterial ];
+    // var materialArray = [ lavaMaterial, chromeMaterial ];
 
     var textGeom = new THREE.TextGeometry( title, 
     {
-      size: 200, height: 5, curveSegments: 5,
-      font: "helvetiker", weight: "bold", style: "normal",
-      bevelThickness: 1, bevelSize: 2, bevelEnabled: true,
+      size: 15, height: 5, curveSegments: 2,
+      font: "helvetiker", style: "normal",
+      bevelThickness: 0.2, bevelSize: 0.2, bevelEnabled: true,
       material: 0, extrudeMaterial: 1
     });
     
@@ -635,49 +654,18 @@ function AddTextMesh(title)
     textGeom.computeBoundingBox();
     var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
 
-    var pLocal = new THREE.Vector3( 0, 0, -1 );
-    var pWorld = pLocal.applyMatrix4( camera.matrixWorld );
-    var dir = pWorld.sub( camera.position ).normalize();
+    textMesh.position.set( 0, 0, -5 );
+    textMesh.scale.set( 0.1, 0.1, 0.1 );
+    bend(textMesh, 100);
+
+    // var pLocal = new THREE.Vector3( 0, 0, -1 );
+    // var pWorld = pLocal.applyMatrix4( camera.matrixWorld );
+    // var dir = pWorld.sub( camera.position ).normalize();
     // textMesh.position.set(dir.position.x, - dir.position.y, dir.position.z);
-    textMesh.position.set(camera.position.x, - camera.position.y, camera.position.z);
-    textMesh.rotation.x = Math.PI / 2;
+    //textMesh.position.set(camera.position.x, - camera.position.y, camera.position.z);
+    // textMesh.rotation.x = Math.PI / 2;
     // t.o.camera.position.x, -1000, t.o.camera.position.z 
     scene.add(textMesh);
-    
-
-    /*
-      var canvas1 = document.createElement('canvas');
-        var context1 = canvas1.getContext('2d');
-        context1.font = "Bold 40px Arial";
-        context1.fillStyle = "rgba(255,0,0,0.95)";
-        context1.fillText(title, 0, 50);
-
-        // canvas contents will be used for a texture
-        var texture1 = new THREE.Texture(canvas1) 
-        texture1.needsUpdate = true;
-          
-        var material1 = new THREE.MeshBasicMaterial( {map: texture1, side:THREE.DoubleSide } );
-        material1.transparent = true;
-        var mesh1 = new THREE.Mesh(
-            new THREE.PlaneGeometry(canvas1.width, canvas1.height),
-            material1
-          );
-        mesh1.position.set(0,50,0);
-        scene.add( mesh1 );
-    }
-    */
-}
-
-function RemoveTextMesh()
-{
-    // var selectedObject = scene.getObjectByName(overlay.name);
-    // scene.remove( selectedObject );
-    // loop();
-}
-
-function RemoveOverlay()
-{
-  scene.remove (overlay);
 }
 
 /* ----------- MYO GESTURES ----------- */
@@ -771,7 +759,7 @@ $(document).ready(function() {
   // Load default location
 
   //panoLoader.load( new google.maps.LatLng( DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng ) );
-  NextLocation();
+  FirstLocation();
 
   checkWebVR();
 
