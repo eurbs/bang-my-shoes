@@ -28,6 +28,7 @@ var navList = [];
 var headingVector = new THREE.Euler();
 var gamepadMoveVector = new THREE.Vector3();
 var textMesh;
+var clockMesh;
 
 // Utility function
 // ----------------------------------------------
@@ -649,7 +650,7 @@ function AddTextMesh(title)
     var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
 
     textMesh.position.set( 0, 0, -5 );
-    textMesh.scale.set( 0.1, 0.1, 0.1 );
+    textMesh.scale.set( 0.1, 0.1, 0.2 );
     bend(textMesh, 100);
 
     // var pLocal = new THREE.Vector3( 0, 0, -1 );
@@ -667,6 +668,61 @@ function RemoveTextMesh()
     var selectedObject = scene.getObjectByName(textMesh.name);
     scene.remove( selectedObject );
     loop();
+}
+
+function AddClock()
+{
+    
+    //var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+    var materialFront = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+    var materialSide = new THREE.MeshBasicMaterial( { color: 0x333333 } );
+    var materialArray = [ materialFront, materialSide ];
+    var material = new THREE.MeshFaceMaterial(materialArray);
+
+    var textGeom = new THREE.TextGeometry( "600 pts", {
+        size: 15, height: 10, curveSegments: 2,
+        font: 'helvetiker', // Must be lowercase!
+        style: "normal"
+    });
+    clockMesh = new THREE.Mesh( textGeom, material );    
+    textGeom.computeBoundingBox();
+    var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
+    clockMesh.name = "clock";
+
+    clockMesh.position.set( 0, 20, -10 );
+    clockMesh.scale.set( 0.1, 0.1, 0.1 );
+    clockMesh.rotation.x = -5;
+    clockMesh.rotation.y = 6;
+    bend(clockMesh, 100);
+    scene.add(clockMesh);
+}
+
+function UpdateClockTo(text)
+{
+    var selectedObject = scene.getObjectByName(clockMesh.name);
+    scene.remove( selectedObject );
+    //var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+    var materialFront = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+    var materialSide = new THREE.MeshBasicMaterial( { color: 0x333333 } );
+    var materialArray = [ materialFront, materialSide ];
+    var material = new THREE.MeshFaceMaterial(materialArray);
+
+    var textGeom = new THREE.TextGeometry( text, {
+        size: 15, height: 10, curveSegments: 2,
+        font: 'helvetiker', // Must be lowercase!
+        style: "normal"
+    });
+    clockMesh = new THREE.Mesh( textGeom, material );    
+    textGeom.computeBoundingBox();
+    var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
+    clockMesh.name = "clock";
+
+    clockMesh.position.set( 0, 20, -10 );
+    clockMesh.scale.set( 0.1, 0.1, 0.1 );
+    clockMesh.rotation.x = -5;
+    clockMesh.rotation.y = 6;
+    bend(clockMesh, 100);
+    scene.add(clockMesh);
 }
 
 $(document).ready(function() {
@@ -711,4 +767,5 @@ $(document).ready(function() {
   checkWebVR();
 
   loop();
+  AddClock();
 });

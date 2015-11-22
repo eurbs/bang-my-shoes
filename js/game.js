@@ -9,18 +9,15 @@ var location_dictionary=[
 ["Nirobi", "Kenya", -1.3765767,36.7744464, 179592869]
 ]
 
-var score = 600;
+var score = score + 600;
 var scoreTimer = setInterval(scoreClock, 1000);
 var curWin = "Paris";
 
 function scoreClock() {
     score -= 5;
-    /*
-    var disp = document.getElementById("clock");
-    if(disp) {
-    	disp.innerHTML = score;
+    if(clockMesh) {
+    	UpdateClockTo(score.toString()+" pts");
     }
-    */
 }
 
 function getScore(){return score;}
