@@ -32,6 +32,14 @@ function UndelayScore() {
 	delayScore = false;
 }
 
+function subtractScore() {
+  score -= 100;
+}
+
+function punishScore() {
+  score -= 200;
+}
+
 function getScore(){return score;}
 function getWin(){return curWin;}
 
