@@ -33,6 +33,7 @@ function getChoices() {
     else {
       while (true) {
         var rand = Math.floor((Math.random()*(location_dictionary.length)));
+        console.log(rand);
         var j=0;
         for (j=0; j<choices.length; j++) {
           if (choices[j] == rand || (winPos == rand && i > winPos)) {
@@ -47,7 +48,7 @@ function getChoices() {
     }
     var choicesText = []
     for (var k=0; k<choices.length; k++) {
-      choicesText.push(location_dictionary[k][0] + ", " + location_dictionary[k][1]);
+      choicesText.push(location_dictionary[choices[k]][0] + ", " + location_dictionary[choices[k]][1]);
     }
   }
   return choicesText;
