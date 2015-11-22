@@ -11,6 +11,7 @@ var location_dictionary=[
 
 var score = 600;
 var scoreTimer = setInterval(scoreClock, 1000);
+var winPos = 0;
 
 function scoreClock() {
     score -= 5;
@@ -24,6 +25,34 @@ function scoreClock() {
 
 function getScore(){return score;}
 
+function getChoices() {
+  var choices = [];
+  var winChoicePos = Math.floor(((Math.random()*2) + 1)); // 0,1,or2
+  for (var i=0; i<3; i++) {
+    if (i == winChoicePos) {
+      choices.push(winPos);
+    }
+    else {
+      var rand = Math.floor(((Math.random()*(location_dictionary.length-1)) + 1));
+      while (true) {
+        for (var j=0; j<choices.length; j++) {
+          if (choices[j] == rand || winPos == rand) {
+            break;
+          }
+        }
+        if (j == choices.length) {
+          choices.push(rand)
+          break;
+        }
+      }
+    }
+    var choicesText = []
+    for (var k=0; k<choices.length; k++) {
+      choicesText.push(location_dictionary[k][0] + ", " + location_dictionary[k][1]);
+    }
+  }
+}
+
 function stopScore() {
 	var temp = score;
 	score = 600;
@@ -35,6 +64,7 @@ function chooseRandomLocation()
 {
 	//number between 1 - 7
 	var rand = Math.floor(((Math.random()*6) + 1));
+  winPos = rand;
 	var loc = { lat: location_dictionary[rand][2], lng: location_dictionary[rand][3]};
 	
 	//play associated song
