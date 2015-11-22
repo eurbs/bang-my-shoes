@@ -1,6 +1,19 @@
+var sound = true;
+var active;
+
 function streamSound(trackNum)
 {
-	SC.stream('/tracks/' + trackNum).then(function(player){
-		  player.play();
-			});
+	if(sound)
+	{
+		SC.stream('/tracks/' + trackNum).then(function(player){
+			active = player;
+			  player.play();
+				});
+	}
+}
+
+function killSound()
+{
+	sound = false;
+	active.stop();
 }

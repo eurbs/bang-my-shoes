@@ -125,10 +125,15 @@ function initControls() {
         }
         lastCtrlKeyTime = ctrlKeyTime;
         break;
-      case 39:
+      case 39: //both left and right arrow keys manually advance scene
       case 37:
         NextLocation();
         break;
+      case 83: //S toggles sound
+        killSound();
+        break;
+      case 82: //r resets score
+        stopScore();
       case 18: // Alt
         USE_DEPTH = !USE_DEPTH;
         $('#depth').prop('checked', USE_DEPTH);
@@ -468,7 +473,7 @@ function NextLocation()
 {
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
-    // ADD YOUR CODE HERE:
+    stopScore();
     
 }
 

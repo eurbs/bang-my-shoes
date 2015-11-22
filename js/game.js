@@ -22,7 +22,7 @@ function getScore(){return score;}
 function stopScore() {
 	var temp = score;
 	score = 600;
-	window.clearInterval(scoreTimer);
+	//window.clearInterval(scoreTimer);
 	return score;
 }
 
