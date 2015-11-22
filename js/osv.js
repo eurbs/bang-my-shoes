@@ -740,7 +740,7 @@ function UpdateClockTo(text)
 
 function EndGame ()
 {
-  // stop the clock
+  DelayScore();
   // add the cat
   AddTextMesh("End Game. Look Up.");
 }
@@ -764,7 +764,6 @@ Myo.on('fist', function () {
       skipped = false;
       valid = (getWin() == choices[curChoice]);
       if (valid != true) {
-        // INCREMENT TOTAL SCORE IF VALID CHOICE
         subtractScore();
       }
       RemoveTextMesh();
