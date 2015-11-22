@@ -12,9 +12,8 @@
 				margin: 0px;
 				padding: 0px;
 				overflow: hidden;
-			}
-
-		</style>
+			} 
+    	</style>
 	</head>
 	<body>
 		<script src="js/lib/fetch.js"></script>
@@ -27,5 +26,10 @@
 		<script src="js/webvr-manager.js"></script>
 		<script src="js/fetchPanos.js"></script>
 		<script src="js/main.js"></script>
+		<div id="map"></div>
+    	<div id="pano"></div>
+    	<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLbEwKuHp8UNHZK-G2DL3zcz8jrBQ3I3I&signed_in=true&callback=initialize">
+   		</script>
 	</body>
 </html>
