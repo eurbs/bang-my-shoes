@@ -1,3 +1,9 @@
+try {
+	Myo.connect();
+} catch (err) {
+	// do nothing. Leave uncaught.
+}
+
 // url parameters
 var parameters = (function() {
 	var parameters = {};
@@ -223,7 +229,8 @@ function setupScene() {
 
 }
 
-
+// note: this is switch images segment
+// note: IMPORTANT
 function onkey(e) {
 	panosList.then(function (panos) {
 
@@ -250,6 +257,28 @@ function onkey(e) {
 
 window.addEventListener("keydown", onkey, true);
 
+
+// note: this is myo gesture switch images since don't know how to do global
+//       variables across files in js (specifically counter)
+Myo.on('wave_in', function () {
+	panosList.then(function (panos) {
+		counter--;
+		if (counter < 0) {
+			counter = panos.length - 1;
+		}
+		loadPano();
+	});
+});
+
+Myo.on('wave_out', function () {
+	panosList.then(function (panos) {
+		counter ++;
+		if (counter == panos.length) {
+			counter = 0;
+		}
+		loadPano();
+	});
+});
 
 function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
