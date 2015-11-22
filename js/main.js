@@ -139,8 +139,11 @@ function init() {
 	});
 
 	// add background sound
-	// var listener = new THREE.AudioListener();
-	// camera.add( listener );
+	//var listener = new THREE.AudioListener();
+	//camera.add( listener );
+
+	//Play a sound effect
+	initSound();
 
 	// Fetch the JSON list of panos.
 	panosList.then(loadMaterial).then(loadPano);
