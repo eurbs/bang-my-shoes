@@ -668,6 +668,15 @@ function AddTextMesh(title)
     scene.add(textMesh);
 }
 
+
+function RemoveTextMesh()
+{
+    var selectedObject = scene.getObjectByName(textMesh.name);
+    scene.remove( selectedObject );
+    loop();
+}
+
+
 /* ----------- MYO GESTURES ----------- */
 
 var fistCount = 0;
