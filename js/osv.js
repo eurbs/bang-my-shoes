@@ -6,6 +6,7 @@
 
 try {
   Myo.connect();
+  Myo.unlock();
 } catch (err) {
   // do nothing. Leave uncaught if there are no myos available.
 }
@@ -551,7 +552,7 @@ function FirstLocation()
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     //alert(loc.city)
-    AddTextMesh(loc.city + ", " + loc.country);
+    // AddTextMesh(loc.city + ", " + loc.country);
     }
     catch(error)
     {
@@ -570,7 +571,7 @@ function NextLocation()
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     //alert(loc.city)
-    AddTextMesh(loc.city + ", " + loc.country);
+    //AddTextMesh(loc.city + ", " + loc.country);
     }
     catch(error)
     {
