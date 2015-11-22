@@ -634,10 +634,10 @@ function AddTextMesh(title)
     var dir = pWorld.sub( camera.position ).normalize();
     // textMesh.position.set(dir.position.x, - dir.position.y, dir.position.z);
     textMesh.position.set(camera.position.x, - camera.position.y, camera.position.z);
-    textMesh.rotation.x = -Math.PI / 2;
+    textMesh.rotation.x = Math.PI / 2;
     // t.o.camera.position.x, -1000, t.o.camera.position.z 
     scene.add(textMesh);
-    */
+    
 
     /*
       var canvas1 = document.createElement('canvas');
