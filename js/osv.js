@@ -466,7 +466,6 @@ function getParams() {
 function NextLocation()
 {
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
-    alert(loc);
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     // ADD YOUR CODE HERE:
     

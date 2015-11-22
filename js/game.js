@@ -9,7 +9,19 @@ var location_dictionary=[
 ["Nirobi", "Kenya", -1.3765767,36.7744464]
 ]
 
+var score = 600;
+var scoreTimer = setInterval(scoreClock, 1000);
 
+function scoreClock() {
+    score -= 5;
+}
+
+function stopScore() {
+	var temp = score;
+	score = 600;
+	window.clearInterval(scoreTimer);
+	return score;
+}
 
 function chooseRandomLocation()
 {
