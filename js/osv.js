@@ -4,6 +4,13 @@
  * Google Street View viewer for the Oculus Rift
  */
 
+try {
+  Myo.connect();
+  Myo.unlock();
+} catch (err) {
+  // do nothing. Leave uncaught if there are no myos available.
+}
+
 // Parameters
 // ----------------------------------------------
 var QUALITY = 3;
@@ -546,7 +553,7 @@ function FirstLocation()
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     //alert(loc.city)
-    AddTextMesh(loc.city + ", " + loc.country);
+    // AddTextMesh(loc.city + ", " + loc.country);
     }
     catch(error)
     {
@@ -565,7 +572,7 @@ function NextLocation()
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     //alert(loc.city)
-    AddTextMesh(loc.city + ", " + loc.country);
+    //AddTextMesh(loc.city + ", " + loc.country);
     }
     catch(error)
     {
@@ -663,6 +670,7 @@ function AddTextMesh(title)
     scene.add(textMesh);
 }
 
+
 function RemoveTextMesh()
 {
     var selectedObject = scene.getObjectByName(textMesh.name);
@@ -724,6 +732,60 @@ function UpdateClockTo(text)
     bend(clockMesh, 100);
     scene.add(clockMesh);
 }
+
+/* ----------- MYO GESTURES ----------- */
+
+var fistCount = 0;
+var curChoice = 1;
+var choices;
+
+Myo.on('fist', function () {
+  switch(fistCount) {
+    case 0:   // bring up choice menu
+      choices = getChoices();
+      AddTextMesh(choices[curChoice]);
+      fistCount = 1;
+      break;
+    case 1:   // select option
+      RemoveTextMesh(); // note: temporary. this should activate the verification of answer
+      fistCount = 2;
+      break;
+    default:
+      break;
+  }
+});
+
+Myo.on('wave_in', function () {
+  if (fistCount == 1 && curChoice > 0) {
+    RemoveTextMesh();
+    curChoice -= 1;
+    AddTextMesh(choices[curChoice]);
+  }
+});
+
+Myo.on('wave_out', function () {
+  if (fistCount == 1 && curChoice < 2) {
+    RemoveTextMesh();
+    curChoice += 1;
+    AddTextMesh(choices[curChoice]);
+  }
+});
+
+// move to next location
+Myo.on('snap', function () {
+  if (fistCount == 2) { 
+    fistCount = 0
+    NextLocation();
+  }
+});
+
+// move to next location, redundant gesture
+Myo.on('fingers_spread', function () {
+  if (fistCount == 2) { 
+    fistCount = 0
+    NextLocation();
+  }
+});
 
 $(document).ready(function() {
 
