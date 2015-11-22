@@ -194,6 +194,9 @@ function initControls() {
         }
         lastSpaceKeyTime = spaceKeyTime;
         break;
+      case 71: //grouppon
+        loadOverlay("cat");
+        break;
       case 17: // Ctrl
         var ctrlKeyTime = new Date();
         if (ctrlKeyTime-lastCtrlKeyTime < 300) {
@@ -738,9 +741,16 @@ function UpdateClockTo(text)
     scene.add(clockMesh);
 }
 
+function EndGame ()
+{
+  DelayScore();
+  AddTextMesh("End Game. Look Up.");
+}
+
 /* ----------- MYO GESTURES ----------- */
 
 var fistCount = 0;
+var spreadCount = 0;
 var curChoice = 1;
 var choices;
 
@@ -756,7 +766,6 @@ Myo.on('fist', function () {
       skipped = false;
       valid = (getWin() == choices[curChoice]);
       if (valid != true) {
-        // INCREMENT TOTAL SCORE IF VALID CHOICE
         subtractScore();
       }
       RemoveTextMesh();
@@ -790,9 +799,13 @@ Myo.on('wave_out', function () {
 
 // move to next location
 Myo.on('fingers_spread', function () {
+  spreadCount = 1;
   if (fistCount == 2) { 
-    fistCount = 0
+    fistCount = 0;
+    spreadCount = 0;
     NextLocation();
+  } else if (spreadCount == 1 && fistCount == 0) {
+    EndGame();
   }
 });
 
