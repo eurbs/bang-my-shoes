@@ -741,11 +741,16 @@ var choices;
 Myo.on('fist', function () {
   switch(fistCount) {
     case 0:   // bring up choice menu
+      // DELAY CLOCK
       choices = getChoices();
       AddTextMesh(choices[curChoice]);
       fistCount = 1;
       break;
     case 1:   // select option
+      valid = true
+      if (valid == true) {
+        // INCREMENT TOTAL SCORE IF VALID CHOICE
+      }
       RemoveTextMesh(); // note: temporary. this should activate the verification of answer
       fistCount = 2;
       break;
