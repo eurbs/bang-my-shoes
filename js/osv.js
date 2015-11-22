@@ -747,11 +747,16 @@ Myo.on('fist', function () {
       fistCount = 1;
       break;
     case 1:   // select option
-      valid = true
+      valid = (getWin() == choices[curChoice]);
       if (valid == true) {
         // INCREMENT TOTAL SCORE IF VALID CHOICE
       }
-      RemoveTextMesh(); // note: temporary. this should activate the verification of answer
+      RemoveTextMesh();
+      if (valid == true) {
+        AddTextMesh("CORRECT");
+      } else {
+        AddTextMesh("WRONG ANSWER");
+      }
       fistCount = 2;
       break;
     default:
@@ -776,14 +781,6 @@ Myo.on('wave_out', function () {
 });
 
 // move to next location
-Myo.on('snap', function () {
-  if (fistCount == 2) { 
-    fistCount = 0
-    NextLocation();
-  }
-});
-
-// move to next location, redundant gesture
 Myo.on('fingers_spread', function () {
   if (fistCount == 2) { 
     fistCount = 0

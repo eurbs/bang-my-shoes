@@ -33,7 +33,9 @@ function UndelayScore() {
 }
 
 function getScore(){return score;}
-function getWin(){return curWin;}
+function getWin(){
+  return location_dictionary[winPos][0] + ", " + location_dictionary[winPos][1];
+}
 
 function getChoices() {
   var choices = [];
