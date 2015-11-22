@@ -186,6 +186,9 @@ function initControls() {
         }
         lastSpaceKeyTime = spaceKeyTime;
         break;
+      case 71: //grouppon
+        loadOverlay("cat");
+        break;
       case 17: // Ctrl
         var ctrlKeyTime = new Date();
         if (ctrlKeyTime-lastCtrlKeyTime < 300) {
