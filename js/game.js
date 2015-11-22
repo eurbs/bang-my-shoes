@@ -24,6 +24,7 @@ function scoreClock() {
 }
 
 function getScore(){return score;}
+function getWin(){return curWin;}
 
 function getChoices() {
   var choices = [];
@@ -65,8 +66,8 @@ function chooseRandomLocation()
 	//number between 1 - 7
 	var rand = Math.floor(((Math.random()*6) + 1));
   winPos = rand;
-	var loc = { lat: location_dictionary[rand][2], lng: location_dictionary[rand][3]};
-	
+	var loc = { city: location_dictionary[rand][0], lat: location_dictionary[rand][2], lng: location_dictionary[rand][3]};
+
 	//play associated song
 	streamSound(location_dictionary[rand][4]);
 
