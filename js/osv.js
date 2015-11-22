@@ -51,8 +51,71 @@ function deltaAngleRas(a,b) {
   // todo
 }
 
+function bend( group, amount, multiMaterialObject ) {
+  function bendVertices( mesh, amount, parent ) {
+    var vertices = mesh.geometry.vertices;
+
+    if (!parent) {
+      parent = mesh;
+    }
+
+    for (var i = 0; i < vertices.length; i++) {
+      var vertex = vertices[i];
+
+      // apply bend calculations on vertexes from world coordinates
+      parent.updateMatrixWorld();
+
+      var worldVertex = parent.localToWorld(vertex);
+
+      var worldX = Math.sin( worldVertex.x / amount) * amount;
+      var worldZ = - Math.cos( worldVertex.x / amount ) * amount;
+      var worldY = worldVertex.y  ;
+
+      // convert world coordinates back into local object coordinates.
+      var localVertex = parent.worldToLocal(new THREE.Vector3(worldX, worldY, worldZ));
+      vertex.x = localVertex.x;
+      vertex.z = localVertex.z+amount;
+      vertex.y = localVertex.y;
+    }
+
+    mesh.geometry.computeBoundingSphere();
+    mesh.geometry.verticesNeedUpdate = true;
+  }
+
+  for ( var i = 0; i < group.children.length; i ++ ) {
+    var element = group.children[ i ];
+
+    if (element.geometry.vertices) {
+      if (multiMaterialObject) {
+        bendVertices( element, amount, group);
+      } else {
+        bendVertices( element, amount);
+      }
+    }
+  }
+}
+
 
 // ----------------------------------------------
+
+function loadOverlay(city)
+{
+  overlay = new THREE.Object3D();
+  var mesh = new THREE.Mesh(
+    new THREE.PlaneGeometry( 63, 30, 20, 20 ),
+    new THREE.MeshBasicMaterial({
+      transparent: true,
+      alphaTest: 0.5,
+      side: THREE.FrontSide,
+      map: THREE.ImageUtils.loadTexture('images/' + city + 'Overlay.png')
+  }));
+  overlay.add( mesh );
+  overlay.position.set( 0, 0, -5 );
+  overlay.scale.set( 0.1, 0.1, 0.1 );
+  bend(overlay, 100);
+  mesh.renderDepth = 1;
+  scene.add( overlay );
+}
 
 function initWebGL() {
   // create scene
@@ -71,6 +134,9 @@ function initWebGL() {
   projSphere.geometry.dynamic = true;
   scene.add( projSphere );
 
+  //attempt to do overlay text here
+  //scene = new THREE.Scene();
+  //loadOverlay("SanFrancisco");
   // Add Progress Bar
   progBarContainer = new THREE.Mesh( new THREE.BoxGeometry(1.2,0.2,0.1), new THREE.MeshBasicMaterial({color: 0xaaaaaa}));
   progBarContainer.translateZ(-3);
@@ -214,24 +280,6 @@ function initPano() {
   panoLoader = new GSVPANO.PanoLoader();
   panoDepthLoader = new GSVPANO.PanoDepthLoader();
   panoLoader.setZoom(QUALITY);
-
-  //attempt to do overlay text here
-  //scene = new THREE.Scene();
-  overlay = new THREE.Object3D();
-  var mesh = new THREE.Mesh(
-    new THREE.PlaneGeometry( 63, 30, 20, 20 ),
-    new THREE.MeshBasicMaterial({
-      transparent: true,
-      alphaTest: 0.5,
-      side: THREE.FrontSide,
-      map: THREE.ImageUtils.loadTexture('images/louvre-overlay.png')
-  }));
-  overlay.add( mesh );
-  overlay.position.set( 0, -3, -5 );
-  overlay.scale.set( 0.1, 0.1, 0.1 );
-  //bend(overlay, 100);
-  mesh.renderDepth = 1;
-  scene.add( overlay );
 
   panoLoader.onProgress = function( progress ) {
     if (progress > 0) {
@@ -491,14 +539,19 @@ function getParams() {
 
 function NextLocation()
 {
+    //RemoveTextMesh();
     try{
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
+    alert(loc.city)
+    loadOverlay("Boston");
     }
     catch(error)
     {
       panoLoader.load( new google.maps.LatLng( DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng ) );
     }
+
+
     stopScore();
     
 }
@@ -611,7 +664,7 @@ function AddTextMesh(title)
 
 function RemoveTextMesh()
 {
-    var selectedObject = scene.getObjectByName(textMesh.name);
+    var selectedObject = scene.getObjectByName(overlay.name);
     scene.remove( selectedObject );
     loop();
 }
