@@ -125,6 +125,7 @@ function initControls() {
         }
         lastCtrlKeyTime = ctrlKeyTime;
         break;
+      case 39:
       case 37:
         NextLocation();
         break;
