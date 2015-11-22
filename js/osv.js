@@ -209,7 +209,7 @@ function initControls() {
         killSound();
         break;
       case 82: //r resets score
-        stopScore();
+        resetScore();
       case 18: // Alt
         USE_DEPTH = !USE_DEPTH;
         $('#depth').prop('checked', USE_DEPTH);
@@ -561,7 +561,7 @@ function FirstLocation()
     }
 
 
-    stopScore();
+    resetScore();
     
 }
 
@@ -581,7 +581,6 @@ function NextLocation()
 
 
     stopScore();
-    
 }
 
 function PasteText() 

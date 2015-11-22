@@ -9,15 +9,27 @@ var location_dictionary=[
 ["Nirobi", "Kenya", -1.3765767,36.7744464, 179592869]
 ]
 
-var score = score + 600;
+var score = 600;
 var scoreTimer = setInterval(scoreClock, 1000);
+var curWin = "Paris";
+var delayScore = false;
 var winPos = 0;
 
 function scoreClock() {
-    score -= 5;
-    if(clockMesh) {
-    	UpdateClockTo(score.toString()+" pts");
-    }
+	if(delayScore != true) {
+		score -= 5;
+		if(clockMesh) {
+	    	UpdateClockTo(score.toString()+" pts");
+	    }
+	}
+}
+
+function DelayScore() {
+	delayScore = true;
+}
+
+function UndelayScore() {
+	delayScore = false;
 }
 
 function getScore(){return score;}
@@ -55,7 +67,12 @@ function getChoices() {
 }
 
 function stopScore() {
-	var temp = score;
+	score += 600;
+	//window.clearInterval(scoreTimer);
+	return score;
+}
+
+function resetScore() {
 	score = 600;
 	//window.clearInterval(scoreTimer);
 	return score;
