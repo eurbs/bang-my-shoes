@@ -26,6 +26,7 @@ var navList = [];
 
 var headingVector = new THREE.Euler();
 var gamepadMoveVector = new THREE.Vector3();
+var textMesh;
 
 // Utility function
 // ----------------------------------------------
@@ -196,7 +197,6 @@ function initGui()
     USE_DEPTH = $('#depth').is(':checked');
     setSphereGeometry();
   });
-
   window.addEventListener( 'resize', resize, false );
 
 }
@@ -470,6 +470,95 @@ function NextLocation()
     
 }
 
+function PasteText() 
+{
+    var text2 = document.createElement('div');
+    text2.style.position = 'absolute';
+    //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+    text2.style.width = 500;
+    text2.style.height = 500;
+    text2.innerHTML = "Paris";
+    text2.style.top = 500+ 'px';
+    text2.style.left = 500 + 'px';
+    text2.style.fontSize = "50px";
+    text2.style.color = "white";
+    document.body.appendChild(text2);
+}
+
+function AddText(title, type="caption") 
+{
+    var text2 = document.createElement('div');
+    text2.setAttribute("id", type);
+    text2.style.position = 'absolute';
+    //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+    text2.style.width = 500;
+    text2.style.height = 500;
+    text2.innerHTML = title;
+    text2.style.top = 500+ 'px';
+    text2.style.left = 500 + 'px';
+    text2.style.fontSize = "70px";
+    text2.style.color = "white";
+    text2.backgroundColor = "rgba(0, 0, 0, 0.3)";
+    text2.padding = "25px";
+    document.body.appendChild(text2);
+}
+
+function RemoveText(type) 
+{
+    document.getElementById(type).remove();
+}
+
+function AddTextMesh(title)
+{
+    // add 3D text
+    var materialFront = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+    var materialSide = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+    var materialArray = [ materialFront, materialSide ];
+
+    var chromeTexture = THREE.ImageUtils.loadTexture( 'Chrome.png' );
+    chromeTexture.wrapS = chromeTexture.wrapT = THREE.RepeatWrapping;
+    chromeTexture.repeat.set( 0.5, 0.5 );
+    var chromeMaterial = new THREE.MeshBasicMaterial( { map: chromeTexture } );
+    
+    var lavaTexture = THREE.ImageUtils.loadTexture( 'lava.jpg' );
+    lavaTexture.wrapS = lavaTexture.wrapT = THREE.RepeatWrapping;
+    lavaTexture.repeat.set( 0.05, 0.05 );
+    var lavaMaterial = new THREE.MeshBasicMaterial( { map: lavaTexture } );
+    
+    var materialArray = [ lavaMaterial, chromeMaterial ];
+
+    var textGeom = new THREE.TextGeometry( title, 
+    {
+      size: 200, height: 5, curveSegments: 5,
+      font: "helvetiker", weight: "bold", style: "normal",
+      bevelThickness: 1, bevelSize: 2, bevelEnabled: true,
+      material: 0, extrudeMaterial: 1
+    });
+    
+    var textMaterial = new THREE.MeshFaceMaterial(materialArray);
+    textMesh = new THREE.Mesh(textGeom, textMaterial );
+    textMesh.name = "text";
+    
+    textGeom.computeBoundingBox();
+    var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
+
+    var pLocal = new THREE.Vector3( 0, 0, -1 );
+    var pWorld = pLocal.applyMatrix4( camera.matrixWorld );
+    var dir = pWorld.sub( camera.position ).normalize();
+    // textMesh.position.set(dir.position.x, - dir.position.y, dir.position.z);
+    textMesh.position.set(camera.position.x, - camera.position.y, camera.position.z);
+    textMesh.rotation.x = -Math.PI / 2;
+    // t.o.camera.position.x, -1000, t.o.camera.position.z 
+    scene.add(textMesh);
+}
+
+function RemoveTextMesh()
+{
+    var selectedObject = scene.getObjectByName(textMesh.name);
+    scene.remove( selectedObject );
+    loop();
+}
+
 $(document).ready(function() {
 
   // Read parameters
@@ -495,6 +584,7 @@ $(document).ready(function() {
       }
     }
   });
+  // PasteText();
   setUiSize();
   initWebGL();
   initControls();
