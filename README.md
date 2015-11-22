@@ -1,8 +1,8 @@
 ## !MyShoes
 
-Jump in and experience our Oculus Google Maps geography guessing game! Using an Oculus Headset and a Myo armband, you'll be given 3 locations in the world sourced from Google Streetview as well as accompanying national anthems. See which capital cities you can identify!
+Jump in and experience our Oculus Google Maps geography guessing game! Using an Oculus Headset and a Myo armband, you'll placed in a random location in the world sourced from Google Streetview and given 3 options for possible cities as well as accompanying music for help, guess where you are. See which capital cities you can identify based on views and sounds! How quickly were you able to do it?
 
-This project is also more than just a game. We believe that by giving an easy and lifelike glimpse into the lives of people around the world we can inspire compassion and understanding. Our name, !MyShoes ("!" indicating "not"), reflects the ability of our technology to literally put you in the shoes of someone else and experience the world from their eyes.
+However, this project is also more than just a game. We believe that by giving an easy and lifelike glimpse into the lives of people around the world we can inspire compassion and understanding. Our name, !MyShoes ("!" indicating "not"), reflects the ability of our technology to literally put you in the shoes of someone else and experience the world from their eyes. In the future, we also plan to develop an accompanying web application where people from different continents can upload panoramas of theirs homes and let everyone else experience it even for just a bit. 
 
 [Click to view](http://eurbs.github.io/bang-my-shoes/)
 

@@ -4,6 +4,13 @@
  * Google Street View viewer for the Oculus Rift
  */
 
+try {
+  Myo.connect();
+  Myo.unlock();
+} catch (err) {
+  // do nothing. Leave uncaught if there are no myos available.
+}
+
 // Parameters
 // ----------------------------------------------
 var QUALITY = 3;
@@ -28,6 +35,7 @@ var navList = [];
 var headingVector = new THREE.Euler();
 var gamepadMoveVector = new THREE.Vector3();
 var textMesh;
+var clockMesh;
 
 // Utility function
 // ----------------------------------------------
@@ -204,7 +212,7 @@ function initControls() {
         killSound();
         break;
       case 82: //r resets score
-        stopScore();
+        resetScore();
       case 18: // Alt
         USE_DEPTH = !USE_DEPTH;
         $('#depth').prop('checked', USE_DEPTH);
@@ -548,7 +556,7 @@ function FirstLocation()
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     //alert(loc.city)
-    AddTextMesh(loc.city + ", " + loc.country);
+    // AddTextMesh(loc.city + ", " + loc.country);
     }
     catch(error)
     {
@@ -556,27 +564,32 @@ function FirstLocation()
     }
 
 
-    stopScore();
+    resetScore();
     
 }
 
+var skipped = true;
+
 function NextLocation()
-{
+{   
+    if(skipped) {
+      punishScore();
+      console.log("punish");
+    }
     try{RemoveTextMesh();}catch(e){}
     try{
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     //alert(loc.city)
-    AddTextMesh(loc.city + ", " + loc.country);
+    //AddTextMesh(loc.city + ", " + loc.country);
     }
     catch(error)
     {
       panoLoader.load( new google.maps.LatLng( DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng ) );
     }
-
-
+    UndelayScore();
     stopScore();
-    
+    skipped = true;
 }
 
 function PasteText() 
@@ -652,8 +665,8 @@ function AddTextMesh(title)
     var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
 
     textMesh.position.set( 0, 0, -5 );
-    textMesh.scale.set( 0.1, 0.1, 0.1 );
-    bend(textMesh, 300);
+    textMesh.scale.set( 0.1, 0.1, 0.2 );
+    bend(textMesh, 100);
 
     // var pLocal = new THREE.Vector3( 0, 0, -1 );
     // var pWorld = pLocal.applyMatrix4( camera.matrixWorld );
@@ -665,12 +678,126 @@ function AddTextMesh(title)
     scene.add(textMesh);
 }
 
+
 function RemoveTextMesh()
 {
     var selectedObject = scene.getObjectByName(textMesh.name);
     scene.remove( selectedObject );
     loop();
 }
+
+function AddClock()
+{
+    
+    //var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+    var materialFront = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+    var materialSide = new THREE.MeshBasicMaterial( { color: 0x333333 } );
+    var materialArray = [ materialFront, materialSide ];
+    var material = new THREE.MeshFaceMaterial(materialArray);
+
+    var textGeom = new THREE.TextGeometry( "600 pts", {
+        size: 15, height: 10, curveSegments: 2,
+        font: 'helvetiker', // Must be lowercase!
+        style: "normal"
+    });
+    clockMesh = new THREE.Mesh( textGeom, material );    
+    textGeom.computeBoundingBox();
+    var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
+    clockMesh.name = "clock";
+
+    clockMesh.position.set( 0, 20, -10 );
+    clockMesh.scale.set( 0.1, 0.1, 0.1 );
+    clockMesh.rotation.x = -5;
+    clockMesh.rotation.y = 6;
+    bend(clockMesh, 100);
+    scene.add(clockMesh);
+}
+
+function UpdateClockTo(text)
+{
+    var selectedObject = scene.getObjectByName(clockMesh.name);
+    scene.remove( selectedObject );
+    //var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+    var materialFront = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+    var materialSide = new THREE.MeshBasicMaterial( { color: 0x333333 } );
+    var materialArray = [ materialFront, materialSide ];
+    var material = new THREE.MeshFaceMaterial(materialArray);
+
+    var textGeom = new THREE.TextGeometry( text, {
+        size: 15, height: 10, curveSegments: 2,
+        font: 'helvetiker', // Must be lowercase!
+        style: "normal"
+    });
+    clockMesh = new THREE.Mesh( textGeom, material );    
+    textGeom.computeBoundingBox();
+    var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
+    clockMesh.name = "clock";
+
+    clockMesh.position.set( 0, 20, -10 );
+    clockMesh.scale.set( 0.1, 0.1, 0.1 );
+    clockMesh.rotation.x = -5;
+    clockMesh.rotation.y = 6;
+    bend(clockMesh, 100);
+    scene.add(clockMesh);
+}
+
+/* ----------- MYO GESTURES ----------- */
+
+var fistCount = 0;
+var curChoice = 1;
+var choices;
+
+Myo.on('fist', function () {
+  switch(fistCount) {
+    case 0:   // bring up choice menu
+      DelayScore();
+      choices = getChoices();
+      AddTextMesh(choices[curChoice]);
+      fistCount = 1;
+      break;
+    case 1:   // select option
+      skipped = false;
+      valid = (getWin() == choices[curChoice]);
+      if (valid != true) {
+        // INCREMENT TOTAL SCORE IF VALID CHOICE
+        subtractScore();
+      }
+      RemoveTextMesh();
+      if (valid == true) {
+        AddTextMesh("CORRECT");
+      } else {
+        AddTextMesh("WRONG ANSWER");
+      }
+      fistCount = 2;
+      break;
+    default:
+      break;
+  }
+});
+
+Myo.on('wave_in', function () {
+  if (fistCount == 1 && curChoice > 0) {
+    RemoveTextMesh();
+    curChoice -= 1;
+    AddTextMesh(choices[curChoice]);
+  }
+});
+
+Myo.on('wave_out', function () {
+  if (fistCount == 1 && curChoice < 2) {
+    RemoveTextMesh();
+    curChoice += 1;
+    AddTextMesh(choices[curChoice]);
+  }
+});
+
+// move to next location
+Myo.on('fingers_spread', function () {
+  if (fistCount == 2) { 
+    fistCount = 0
+    NextLocation();
+  }
+});
 
 $(document).ready(function() {
 
@@ -714,4 +841,5 @@ $(document).ready(function() {
   checkWebVR();
 
   loop();
+  AddClock();
 });

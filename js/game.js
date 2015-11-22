@@ -12,22 +12,77 @@ var location_dictionary=[
 var score = 600;
 var scoreTimer = setInterval(scoreClock, 1000);
 var curWin = "Paris";
+var delayScore = false;
+var winPos = 0;
 
 function scoreClock() {
-    score -= 5;
-    /*
-    var disp = document.getElementById("clock");
-    if(disp) {
-    	disp.innerHTML = score;
-    }
-    */
+	if(delayScore != true) {
+		score -= 5;
+		if(clockMesh) {
+	    	UpdateClockTo(score.toString()+" pts");
+	    }
+	}
+}
+
+function DelayScore() {
+	delayScore = true;
+}
+
+function UndelayScore() {
+	delayScore = false;
+}
+
+function subtractScore() {
+  score -= 100;
+}
+
+function punishScore() {
+  score -= 200;
 }
 
 function getScore(){return score;}
-function getWin(){return curWin;}
+function getWin(){
+  return location_dictionary[winPos][0] + ", " + location_dictionary[winPos][1];
+}
+
+function getChoices() {
+  var choices = [];
+  var winChoicePos = Math.floor((Math.random()*3)); // 0,1,or2
+  for (var i=0; i<3; i++) {
+    if (i == winChoicePos) {
+      choices.push(winPos);
+    }
+    else {
+      while (true) {
+        var rand = Math.floor((Math.random()*(location_dictionary.length)));
+        console.log(rand);
+        var j=0;
+        for (j=0; j<choices.length; j++) {
+          if (choices[j] == rand || (winPos == rand && i > winPos)) {
+            break;
+          }
+        }
+        if (j == choices.length) {
+          choices.push(rand)
+          break;
+        }
+      }
+    }
+    var choicesText = []
+    for (var k=0; k<choices.length; k++) {
+      choicesText.push(location_dictionary[choices[k]][0] + ", " + location_dictionary[choices[k]][1]);
+    }
+  }
+  return choicesText;
+}
 
 function stopScore() {
-	var temp = score;
+	score += 600;
+	//window.clearInterval(scoreTimer);
+	return score;
+}
+
+function resetScore() {
 	score = 600;
 	//window.clearInterval(scoreTimer);
 	return score;
@@ -36,9 +91,9 @@ function stopScore() {
 function chooseRandomLocation()
 {
 	//number between 1 - 7
-	var rand = Math.floor(((Math.random()*6) + 1));
+	var rand = Math.floor(((Math.random()*7)));
+  winPos = rand;
 	var loc = { country: location_dictionary[rand][1], city: location_dictionary[rand][0], lat: location_dictionary[rand][2], lng: location_dictionary[rand][3]};
-	curWin = location_dictionary[rand][0];
 
 	//play associated song
 	streamSound(location_dictionary[rand][4]);
