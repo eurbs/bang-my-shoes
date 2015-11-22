@@ -565,8 +565,14 @@ function FirstLocation()
     
 }
 
+var skipped = true;
+
 function NextLocation()
-{
+{   
+    if(skipped) {
+      punishScore();
+      console.log("punish");
+    }
     try{RemoveTextMesh();}catch(e){}
     try{
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
@@ -578,9 +584,9 @@ function NextLocation()
     {
       panoLoader.load( new google.maps.LatLng( DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng ) );
     }
-
-
+    UndelayScore();
     stopScore();
+    skipped = true;
 }
 
 function PasteText() 
@@ -749,15 +755,17 @@ var choices;
 Myo.on('fist', function () {
   switch(fistCount) {
     case 0:   // bring up choice menu
-      // DELAY CLOCK
+      DelayScore();
       choices = getChoices();
       AddTextMesh(choices[curChoice]);
       fistCount = 1;
       break;
     case 1:   // select option
+      skipped = false;
       valid = (getWin() == choices[curChoice]);
-      if (valid == true) {
+      if (valid != true) {
         // INCREMENT TOTAL SCORE IF VALID CHOICE
+        subtractScore();
       }
       RemoveTextMesh();
       if (valid == true) {
