@@ -16,6 +16,18 @@
     	</style>
 	</head>
 	<body>
+		<script src="js/myo.js"></script>
+		<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+		<script>
+		  SC.initialize({
+		    client_id: '7d632856b2a03d6e280d15d63f562150'
+		  });
+
+		  SC.stream('/tracks/293').then(function(player){
+		  player.play();
+			});
+		</script>
+		<script src="js/audio.js"></script>
 		<script src="js/lib/fetch.js"></script>
 		<script src="js/three.min.js"></script>
 		<script src="js/tween.min.js"></script>

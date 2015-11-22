@@ -1,3 +1,8 @@
+try {
+	Myo.connect();
+} catch (err) {
+	// do nothing. Leave uncaught.
+}
 
 // url parameters
 var parameters = (function() {
@@ -108,7 +113,7 @@ function loadPano() {
 		function fadeIn() {
 			new TWEEN.Tween(pano.material)
 				.to({opacity: 1}, 1000)
-				.onComplete(fadeInOverlay)
+				// .onComplete(fadeInOverlay)
 				.start();
 		}
 
@@ -122,6 +127,12 @@ function loadPano() {
 	});
 }
 
+// fade in newly loaded title.
+function fadeInOverlay() {
+	new TWEEN.Tween(overlay.children[0].material)
+		.to({opacity: 1}, 300)
+		.start();
+}
 
 // initialize scene
 
@@ -150,8 +161,12 @@ function init() {
 	});
 
 	// add background sound
-	var listener = new THREE.AudioListener();
-	camera.add( listener );
+	//var listener = new THREE.AudioListener();
+	//camera.add( listener );
+
+	//Play a sound effect
+	//initPlaySound(async=true);
+	streamSound("293");
 
 	// Fetch the JSON list of panos.
 	panosList.then(loadMaterial).then(loadPano);
@@ -234,7 +249,8 @@ function setupScene() {
 
 }
 
-
+// note: this is switch images segment
+// note: IMPORTANT
 function onkey(e) {
 	panosList.then(function (panos) {
 
@@ -261,7 +277,6 @@ function onkey(e) {
 
 window.addEventListener("keydown", onkey, true);
 
-
 function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
@@ -283,5 +298,30 @@ function animate() {
 	}
 }
 
+/* ----------- MYO GESTURES ----------- */
+
+Myo.on('wave_in', function () {
+	panosList.then(function (panos) {
+		counter--;
+		if (counter < 0) {
+			counter = panos.length - 1;
+		}
+		loadPano();
+	});
+});
+
+Myo.on('wave_out', function () {
+	panosList.then(function (panos) {
+		counter ++;
+		if (counter == panos.length) {
+			counter = 0;
+		}
+		loadPano();
+	});
+});
+
+Myo.on('fist', function () {
+	fadeInOverlay();
+});
 
 init();

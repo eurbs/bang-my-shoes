@@ -6,9 +6,14 @@
 
 ## Installation
 
-### Coming soon!!!
+### Myo
 
-## 360 VR panorama
+1. Download, install, and run [Myo Connect](https://www.myo.com/start/)
 
-###[Click here to view project on Mozvr.com](http://mozvr.com/projects/panorama-viewer)
+### More Installation Coming soon!!!
 
+
+## Credit
+
+- [Mosvr Panorama Viewer Project](https://github.com/MozVR/panorama-viewer)
+- [myo.js](https://github.com/thalmiclabs/myo.js)
