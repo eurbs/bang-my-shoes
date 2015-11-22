@@ -539,12 +539,12 @@ function getParams() {
 
 function NextLocation()
 {
-    //RemoveTextMesh();
+    try{RemoveTextMesh();}catch(e){}
     try{
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
-    alert(loc.city)
-    loadOverlay("Boston");
+    //alert(loc.city)
+    loadOverlay(loc.city);
     }
     catch(error)
     {
