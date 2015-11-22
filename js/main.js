@@ -143,7 +143,8 @@ function init() {
 	//camera.add( listener );
 
 	//Play a sound effect
-	initSound();
+	//initPlaySound(async=true);
+	streamSound("293");
 
 	// Fetch the JSON list of panos.
 	panosList.then(loadMaterial).then(loadPano);
