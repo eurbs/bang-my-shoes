@@ -147,7 +147,7 @@ function initWebGL() {
   progBar.translateZ(0.2);
   progBarContainer.add(progBar);
 
-  AddTextMesh("Welcome");
+  //AddTextMesh("Welcome");
 
   // Create render
   try {
@@ -546,7 +546,7 @@ function FirstLocation()
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     //alert(loc.city)
-    loadOverlay(loc.city);
+    AddTextMesh(loc.city + ", " + loc.country);
     }
     catch(error)
     {
@@ -565,7 +565,7 @@ function NextLocation()
     var loc = chooseRandomLocation();//{ lat: 42.345573, lng: -71.098326 };
     panoLoader.load( new google.maps.LatLng( loc.lat, loc.lng ) );
     //alert(loc.city)
-    loadOverlay(loc.city);
+    AddTextMesh(loc.city + ", " + loc.country);
     }
     catch(error)
     {
