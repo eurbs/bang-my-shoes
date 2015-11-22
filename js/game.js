@@ -14,7 +14,7 @@ var scoreTimer = setInterval(scoreClock, 1000);
 
 function scoreClock() {
     score -= 5;
-    console.log(score);
+    //console.log(score);
 }
 
 function getScore(){return score;}
