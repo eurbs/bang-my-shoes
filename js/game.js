@@ -7,9 +7,9 @@ var location_dictionary=[
 ["San Francisco", "USA", 37.8039454,-122.4777254, 20615012],
 ["Sydney", "Australia", -33.858008,151.214097, 117929630],
 ["Nirobi", "Kenya", -1.3765767,36.7744464, 179592869],
-["Ruins", "Syria", 34.802075, 38.996815, 66690104],
+["Tokyo", "Japan", 48.8641569, 2.2972196, 66690104], // change music
 ["Cairo", "Egypt", 29.9803885, 31.1329825, 66690104],
-["Floreana", "Galapagos Islands", -1.2392027, -90.3857351,149876332] 
+["Man Mahal", "India", 25.3077605,83.0108226, 149876332] // cahnge music
 ]
 
 var score = 600;
@@ -97,7 +97,6 @@ function chooseRandomLocation()
 	var rand = Math.floor(((Math.random()*location_dictionary.length)));
   winPos = rand;
 	var loc = { country: location_dictionary[rand][1], city: location_dictionary[rand][0], lat: location_dictionary[rand][2], lng: location_dictionary[rand][3]};
-
 	//play associated song
 	streamSound(location_dictionary[rand][4]);
 
